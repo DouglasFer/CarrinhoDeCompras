@@ -1,0 +1,17 @@
+.loja-container {
+    height: 100vh;
+  }
+  
+  .carrinho-sidenav {
+    width: 420px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  @media (max-width: 480px) {
+    .carrinho-sidenav {
+      width: 100vw;
+    }
+  }

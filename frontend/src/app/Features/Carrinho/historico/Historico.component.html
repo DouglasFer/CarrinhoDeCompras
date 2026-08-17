@@ -1,0 +1,59 @@
+<div class="historico">
+    <header class="historico-header">
+      <span class="eyebrow">PEDIDOS</span>
+      <h1>Histórico de compras</h1>
+      <p>Confira seus pedidos finalizados.</p>
+    </header>
+  
+    <div class="loading" *ngIf="carregando">
+      <mat-spinner diameter="40"></mat-spinner>
+      <span>Carregando pedidos...</span>
+    </div>
+  
+    <div class="historico-vazio" *ngIf="!carregando && pedidos.length === 0">
+      <mat-icon>receipt_long</mat-icon>
+      <h2>Nenhum pedido finalizado</h2>
+      <p>Seus pedidos concluídos aparecerão aqui.</p>
+    </div>
+  
+    <mat-accordion *ngIf="!carregando && pedidos.length > 0">
+        <mat-expansion-panel *ngFor="let pedido of pedidos; trackBy: trackByPedidoId">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Pedido #{{ pedido.id }}</mat-panel-title>
+              <mat-panel-description>
+                <strong>{{ pedido.total | currency:'BRL' }}</strong>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+          
+            <div class="pedido-itens">
+              <div class="pedido-item" *ngFor="let item of pedido.itens">
+                <span class="pedido-item-nome">{{ item.descricaoProduto }}</span>
+                <span class="pedido-item-qtd">{{ item.quantidade }}x {{ item.precoUnitario | currency:'BRL' }}</span>
+                <strong class="pedido-item-total">{{ item.precoUnitario * item.quantidade | currency:'BRL' }}</strong>
+              </div>
+            </div>
+          
+            <div class="pedido-resumo">
+                <div class="pedido-cupom" *ngIf="pedido.codigoCupom">
+                  <mat-icon>local_offer</mat-icon>
+                  <span>Cupom aplicado: <strong>{{ pedido.codigoCupom }}</strong></span>
+                </div>
+              
+                <div class="pedido-linha">
+                  <span>Subtotal</span>
+                  <strong>{{ pedido.subtotal | currency:'BRL' }}</strong>
+                </div>
+              
+                <div class="pedido-linha desconto" *ngIf="pedido.valorDesconto > 0">
+                  <span>Desconto</span>
+                  <strong>- {{ pedido.valorDesconto | currency:'BRL' }}</strong>
+                </div>
+              
+                <div class="pedido-linha total">
+                  <span>Total</span>
+                  <strong>{{ pedido.total | currency:'BRL' }}</strong>
+                </div>
+              </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+  </div>

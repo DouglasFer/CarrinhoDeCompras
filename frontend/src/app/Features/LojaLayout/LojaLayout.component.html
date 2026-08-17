@@ -1,0 +1,15 @@
+<mat-sidenav-container class="loja-container">
+    <mat-sidenav
+      mode="over"
+      position="end"
+      class="carrinho-sidenav"
+      [opened]="carrinhoState.painelAberto$ | async"
+      (closedStart)="carrinhoState.fecharPainel()"
+    >
+      <app-carrinho></app-carrinho>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <app-catalogo></app-catalogo>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

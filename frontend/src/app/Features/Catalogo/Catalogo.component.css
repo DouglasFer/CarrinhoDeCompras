@@ -1,0 +1,253 @@
+.catalogo {
+    padding: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .catalogo-header {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  .btn-abrir-carrinho {
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow: visible;
+  }
+
+  .btn-abrir-carrinho ::ng-deep .mdc-button__ripple,
+  .btn-abrir-carrinho ::ng-deep .mat-mdc-button-touch-target,
+  .btn-abrir-carrinho ::ng-deep .mat-mdc-button-persistent-ripple {
+    overflow: visible;
+  }
+
+  .btn-abrir-carrinho ::ng-deep .mat-icon.mat-badge {
+    overflow: visible;
+  }
+  
+  .btn-abrir-carrinho ::ng-deep .mat-badge-content {
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    z-index: 10;
+  }
+  
+  .btn-abrir-carrinho mat-icon {
+    margin-right: 0;
+  }
+
+  .eyebrow {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #1976d2;
+  }
+  
+  .catalogo-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+  }
+  
+  .catalogo-header p {
+    margin: 8px 0 0;
+    color: #6b7280;
+    font-size: 0.95rem;
+  }
+  
+  .loading {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: #6b7280;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  
+  .produto-card {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .produto-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+  
+  .produto-imagem {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(135deg, #f3f6fa, #e9eef5);
+  }
+  
+  .produto-imagem > mat-icon {
+    width: auto;
+    height: auto;
+    font-size: 64px;
+    color: #9ca3af;
+  }
+  
+  .estoque-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #166534;
+    background: #dcfce7;
+  }
+  
+  .estoque-badge.esgotado {
+    color: #991b1b;
+    background: #fee2e2;
+  }
+  
+  .produto-content {
+    padding: 20px !important;
+  }
+  
+  .produto-categoria {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #9ca3af;
+  }
+  
+  .produto-content h2 {
+    margin: 8px 0 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.4;
+    min-height: 46px;
+  }
+  
+  .produto-preco {
+    margin-bottom: 14px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1976d2;
+  }
+  
+  .estoque-info {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 18px;
+    font-size: 0.82rem;
+    color: #6b7280;
+  }
+  
+  .estoque-info mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
+  
+  .produto-compra {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .quantidade-field {
+    width: 100px;
+  }
+  
+  .quantidade-field ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+  
+  .btn-carrinho {
+    flex: 1;
+    height: 56px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  
+  .btn-carrinho mat-icon {
+    margin-right: 5px;
+  }
+  
+  .catalogo-vazio {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #6b7280;
+  }
+  
+  .catalogo-vazio mat-icon {
+    width: auto;
+    height: auto;
+    font-size: 56px;
+    color: #9ca3af;
+  }
+  
+  .catalogo-vazio h2 {
+    margin: 16px 0 4px;
+    color: #374151;
+  }
+  
+  .catalogo-vazio p {
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .catalogo {
+      padding: 20px 16px;
+    }
+  
+    .catalogo-header h1 {
+      font-size: 1.6rem;
+    }
+  
+    .grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .produto-compra {
+      align-items: stretch;
+    }
+  
+    .quantidade-field {
+      width: 95px;
+    }
+  }

@@ -1,0 +1,195 @@
+<div class="carrinho-container">
+  <mat-tab-group (selectedIndexChange)="onTabChange($event)" animationDuration="200ms">
+
+    <mat-tab label="Carrinho">
+      <div class="carrinho" *ngIf="carrinho$ | async as carrinho">
+        <header class="carrinho-header">
+          <div>
+            <span class="eyebrow">PEDIDO</span>
+            <h1>Meu carrinho</h1>
+            <p *ngIf="carrinho.itens.length > 0">
+              Confira seus produtos antes de finalizar a compra.
+            </p>
+          </div>
+        </header>
+
+        <div class="carrinho-vazio" *ngIf="carrinho.itens.length === 0">
+          <mat-icon>shopping_cart</mat-icon>
+          <h2>Seu carrinho está vazio</h2>
+          <p>Adicione alguns produtos ao carrinho para continuar.</p>
+        </div>
+
+        <div class="carrinho-layout" *ngIf="carrinho.itens.length > 0">
+          <section class="itens-container">
+            <div class="section-header">
+              <h2>Produtos</h2>
+              <span>
+                {{ carrinho.itens.length }}
+                {{ carrinho.itens.length === 1 ? 'item' : 'itens' }}
+              </span>
+            </div>
+
+            <div class="item-card" *ngFor="let item of carrinho.itens; trackBy: trackByProdutoId">
+              <div class="item-info">
+                <h3>{{ item.descricaoProduto }}</h3>
+                <span class="item-preco">
+                  {{ item.precoUnitario | currency:'BRL' }} / unidade
+                </span>
+              </div>
+
+              <div class="item-quantidade">
+                <label>Quantidade</label>
+                <input
+                  type="number"
+                  min="1"
+                  [value]="item.quantidade"
+                  [disabled]="!carrinhoAberto(carrinho)"
+                  (change)="alterarQuantidade(item.produtoId, $any($event.target).valueAsNumber)"
+                  (input)="limitarQuantidade(item)"
+                />
+              </div>
+
+              <div class="item-total">
+                <span>Total</span>
+                <strong>{{ item.precoUnitario * item.quantidade | currency:'BRL' }}</strong>
+              </div>
+
+              <button
+                mat-icon-button
+                class="btn-remover"
+                [disabled]="!carrinhoAberto(carrinho)"
+                (click)="confirmarRemocao(item)"
+                aria-label="Remover produto"
+              >
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+          </section>
+
+          <aside class="resumo">
+            <h2>Resumo do pedido</h2>
+
+            <div class="resumo-linha">
+              <span>Subtotal</span>
+              <strong>{{ carrinho.subtotal | currency:'BRL' }}</strong>
+            </div>
+
+            <div class="resumo-linha desconto" *ngIf="carrinho.valorDesconto > 0">
+              <span>Desconto</span>
+              <strong>- {{ carrinho.valorDesconto | currency:'BRL' }}</strong>
+            </div>
+
+            <div class="resumo-divisor"></div>
+
+            <div class="cupom" *ngIf="carrinhoAberto(carrinho)">
+              <label>Cupom de desconto</label>
+              <div class="cupom-input">
+                <mat-form-field appearance="outline">
+                  <input matInput [(ngModel)]="codigoCupom" placeholder="Ex: 10OFF" />
+                </mat-form-field>
+                <button mat-stroked-button color="primary" (click)="aplicarCupom()">
+                  Aplicar
+                </button>
+              </div>
+
+              <button
+                mat-button
+                class="remover-cupom"
+                *ngIf="carrinho.codigoCupom"
+                (click)="removerCupom()"
+              >
+                Remover cupom
+              </button>
+            </div>
+
+            <div class="cupom-aplicado" *ngIf="carrinho.codigoCupom">
+              <mat-icon>local_offer</mat-icon>
+              <span>Cupom <strong>{{ carrinho.codigoCupom }}</strong> aplicado</span>
+            </div>
+
+            <div class="resumo-total">
+              <span>Total</span>
+              <strong>{{ carrinho.total | currency:'BRL' }}</strong>
+            </div>
+
+            <button
+              mat-raised-button
+              color="primary"
+              class="btn-finalizar"
+              [disabled]="!carrinhoAberto(carrinho) || carrinho.itens.length === 0"
+              (click)="finalizar()"
+            >
+              <mat-icon>check_circle</mat-icon>
+              Finalizar compra
+            </button>
+          </aside>
+        </div>
+
+        <div class="finalizado" *ngIf="carrinho.status === 'Finalizado'">
+          <mat-icon>check_circle</mat-icon>
+          <div>
+            <strong>Compra finalizada</strong>
+            <p>Este carrinho já foi finalizado e não pode mais ser alterado.</p>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Meus pedidos">
+      <div class="historico">
+        <div class="loading" *ngIf="carregandoHistorico">
+          <mat-spinner diameter="40"></mat-spinner>
+          <span>Carregando pedidos...</span>
+        </div>
+
+        <div class="historico-vazio" *ngIf="!carregandoHistorico && pedidos.length === 0">
+          <mat-icon>receipt_long</mat-icon>
+          <h2>Nenhum pedido finalizado</h2>
+          <p>Seus pedidos concluídos aparecerão aqui.</p>
+        </div>
+
+        <mat-accordion *ngIf="!carregandoHistorico && pedidos.length > 0">
+          <mat-expansion-panel *ngFor="let pedido of pedidos; trackBy: trackByPedidoId">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Pedido #{{ pedido.id }}</mat-panel-title>
+              <mat-panel-description>            
+                <strong>{{ pedido.total | currency:'BRL' }}</strong>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="pedido-itens">
+              <div class="pedido-item" *ngFor="let item of pedido.itens">
+                <span>{{ item.descricaoProduto }}</span>
+                <span>{{ item.quantidade }}x {{ item.precoUnitario | currency:'BRL' }}</span>
+                <strong>{{ item.precoUnitario * item.quantidade | currency:'BRL' }}</strong>
+              </div>
+            </div>
+
+            <div class="pedido-resumo">
+              <div class="pedido-cupom" *ngIf="pedido.codigoCupom">
+                <mat-icon>local_offer</mat-icon>
+                <span>Cupom aplicado: <strong>{{ pedido.codigoCupom }}</strong></span>
+              </div>
+
+              <div class="pedido-linha">
+                <span>Subtotal</span>
+                <strong>{{ pedido.subtotal | currency:'BRL' }}</strong>
+              </div>
+
+              <div class="pedido-linha desconto" *ngIf="pedido.valorDesconto > 0">
+                <span>Desconto</span>
+                <strong>- {{ pedido.valorDesconto | currency:'BRL' }}</strong>
+              </div>
+
+              <div class="pedido-linha total">
+                <span>Total</span>
+                <strong>{{ pedido.total | currency:'BRL' }}</strong>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

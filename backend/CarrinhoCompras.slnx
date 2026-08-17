@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CarrinhoCompras.Api/CarrinhoCompras.Api.csproj" />
+  <Project Path="CarrinhoCompras.Application/CarrinhoCompras.Application.csproj" />
+  <Project Path="CarrinhoCompras.Domain/CarrinhoCompras.Domain.csproj" />
+  <Project Path="CarrinhoCompras.Infrastructure/CarrinhoCompras.Infrastructure.csproj" />
+</Solution>

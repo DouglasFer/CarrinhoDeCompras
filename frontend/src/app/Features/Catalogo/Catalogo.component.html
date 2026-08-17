@@ -1,0 +1,115 @@
+<div class="catalogo">
+  <header class="catalogo-header">
+    <div>
+      <span class="eyebrow">LOJA</span>
+      <h1>Catálogo de produtos</h1>
+      <p>Encontre os produtos que você precisa.</p>
+    </div>
+
+    <button
+      mat-stroked-button
+      color="primary"
+      class="btn-abrir-carrinho"
+      (click)="abrirCarrinho()"
+      aria-label="Abrir carrinho"
+    >
+      <mat-icon
+        [matBadge]="totalItens"
+        matBadgeColor="warn"
+        [matBadgeHidden]="totalItens === 0"
+        matBadgeSize="small"
+      >
+        shopping_cart
+      </mat-icon>
+      Carrinho
+    </button>
+  </header>
+
+  <div class="loading" *ngIf="carregando">
+    <mat-spinner diameter="40"></mat-spinner>
+    <span>Carregando produtos...</span>
+  </div>
+
+  <div class="grid" *ngIf="!carregando">
+    <mat-card *ngFor="let produto of produtos" class="produto-card">
+      <div class="produto-imagem">
+        <mat-icon>inventory_2</mat-icon>
+
+        <span
+          class="estoque-badge"
+          [class.esgotado]="produto.quantidadeEstoque === 0"
+        >
+          {{
+            produto.quantidadeEstoque === 0
+              ? 'Esgotado'
+              : 'Disponível'
+          }}
+        </span>
+      </div>
+
+      <mat-card-content class="produto-content">
+        <span class="produto-categoria">PRODUTO</span>
+
+        <h2>{{ produto.descricaoProduto }}</h2>
+
+        <div class="produto-preco">
+          {{ produto.precoUnitario | currency:'BRL' }}
+        </div>
+
+        <div class="estoque-info">
+          <mat-icon>inventory</mat-icon>
+
+          <span>
+            {{
+              produto.quantidadeEstoque === 0
+                ? 'Produto esgotado'
+                : produto.quantidadeEstoque + ' unidades em estoque'
+            }}
+          </span>
+        </div>
+
+        <div
+          class="produto-compra"
+          *ngIf="produto.quantidadeEstoque > 0"
+        >
+          <mat-form-field
+            appearance="outline"
+            class="quantidade-field"
+          >
+            <mat-label>Quantidade</mat-label>
+
+            <input
+              matInput
+              type="text"
+              inputmode="numeric"
+              min="1"
+              maxlength="3"
+              [max]="produto.quantidadeEstoque"
+              [(ngModel)]="produto.quantidadeSelecionada"
+              (input)="limitarQuantidade(produto, $event)"
+            />
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            class="btn-carrinho"
+            (click)="adicionarAoCarrinho(produto)"
+          >
+            <mat-icon>shopping_cart</mat-icon>
+            Adicionar
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div
+    class="catalogo-vazio"
+    *ngIf="!carregando && produtos.length === 0"
+  >
+    <mat-icon>inventory_2</mat-icon>
+    <h2>Nenhum produto encontrado</h2>
+    <p>Não existem produtos disponíveis no momento.</p>
+  </div>
+</div>
